@@ -1,4 +1,5 @@
-﻿using Movie_Store_Web_Api.DBOperations;
+﻿using Microsoft.EntityFrameworkCore;
+using Movie_Store_Web_Api.DBOperations;
 
 namespace Movie_Store_Web_Api.Application.MovieOperations.Commands.DeleteMovie
 {

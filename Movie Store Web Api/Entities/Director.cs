@@ -9,6 +9,5 @@ public class Director
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
-
     public virtual List<Movie>? DirectedMovies { get; set; }
 }

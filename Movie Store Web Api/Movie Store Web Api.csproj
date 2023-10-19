@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <Folder Include="Application\OrderOperations\Queries\GetCustomerOrders\" />
+    <Folder Include="Models\ResponseModels\" />
+    <Folder Include="Models\RequestModels\" />
   </ItemGroup>
 
 </Project>

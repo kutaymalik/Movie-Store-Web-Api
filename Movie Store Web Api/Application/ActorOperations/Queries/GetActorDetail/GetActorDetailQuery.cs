@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movie_Store_Web_Api.DBOperations;
+using Movie_Store_Web_Api.Entities;
 
 namespace Movie_Store_Web_Api.Application.ActorOperations.Queries.GetActorDetail;
 
@@ -16,19 +18,19 @@ public class GetActorDetailQuery
         this.mapper = mapper;
     }
 
-    public ActorDetailViewModel Handle()
+    public Actor Handle()
     {
         var actor = dbContext.Actors
-            .Where(x => x.Id == ActorId).SingleOrDefault();
+            .Where(x => x.Id == ActorId).Include(x => x.PlayedMovies).SingleOrDefault();
 
         if (actor == null)
         {
             throw new InvalidOperationException("Record not found!");
         }
 
-        ActorDetailViewModel vm = mapper.Map<ActorDetailViewModel>(actor);
+        ActorDetailViewModel vm  = mapper.Map<ActorDetailViewModel>(actor);
 
-        return vm;
+        return actor;
     }
 }
 
@@ -36,5 +38,5 @@ public class ActorDetailViewModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public List<int> PlayedMovies { get; set; }
+    public List<Movie> PlayedMovies { get; set; }
 }

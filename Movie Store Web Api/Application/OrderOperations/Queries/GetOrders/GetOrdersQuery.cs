@@ -17,10 +17,23 @@ public class GetOrdersQuery
         this.mapper = mapper;
     }
 
-    public List<Order> Handle()
+    public List<OrderViewModel> Handle()
     {
-        var orderList = dbContext.Orders.Include(x => x.Customer).Include(x => x.Movie).OrderBy(x => x.Id).ToList();
+        var orderList = dbContext.Orders
+            .Include(x => x.Customer).ThenInclude(x => x.FavGenre)
+            .Include(x => x.Movie)
+            .OrderBy(x => x.Id).ToList();
 
-        return orderList;
+        List<OrderViewModel> vm = mapper.Map<List<OrderViewModel>>(orderList);
+
+        return vm;
     }
+}
+
+public class OrderViewModel
+{
+    public string MovieName { get; set; }
+    public string CustomerName { get; set; }
+    public decimal Price { get; set; }
+    public DateTime PurchaseDate { get; set; }
 }

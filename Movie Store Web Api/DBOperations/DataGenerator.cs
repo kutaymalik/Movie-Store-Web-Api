@@ -127,34 +127,6 @@ public class DataGenerator
                 }
                 );
 
-            var matrix = new Movie
-            {
-                Name = "Matrix 1",
-                ReleaseDate = new DateTime(1999, 3, 31),
-                Price = 100,
-                GenreId = 4,
-                DirectorId = 6,
-            };
-
-            var ff = new Movie
-            {
-                Name = "Fast & Furious",
-                ReleaseDate = new DateTime(2001, 11, 2),
-                Price = 150,
-                GenreId = 1,
-                DirectorId = 1,
-            };
-            
-            var avengers = new Movie
-            {
-                Name = "Avengers Endgame",
-                ReleaseDate = new DateTime(2001, 4, 26),
-                Price = 150,
-                GenreId = 4,
-                DirectorId = 4,
- 
-            };
-
             await context.Movies.AddRangeAsync(
                 new Movie
                 {
@@ -183,6 +155,7 @@ public class DataGenerator
                     DirectorId = 4,
                     Actors = new List<Actor>()
                 }
+
                 );
 
             await context.Customers.AddRangeAsync(
@@ -196,6 +169,7 @@ public class DataGenerator
                     FavGenreId = 1,
                     Orders = new List<Order>(),
                 });
+
 
             await context.SaveChangesAsync();
         }

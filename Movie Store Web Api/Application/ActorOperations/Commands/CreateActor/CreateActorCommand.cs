@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Movie_Store_Web_Api.DBOperations;
 using Movie_Store_Web_Api.Entities;
 
@@ -15,31 +16,35 @@ namespace Movie_Store_Web_Api.Application.ActorOperations.Commands.CreateActorOp
 
         public void Handle()
         {
-            var actor = dbContext.Actors.SingleOrDefault(x => x.FirstName == Model.FirstName && x.LastName == Model.LastName);
+            var actor = dbContext.Actors
+                .Include(x => x.PlayedMovies)
+                .SingleOrDefault(x => x.FirstName.ToLower() == Model.FirstName.ToLower() && x.LastName.ToLower() == Model.LastName.ToLower());
 
             if (actor != null)
             {
                 throw new InvalidOperationException("The actor is already exists!");
             }
 
-            var playedMovies = new List<Movie>();
+            var playedmovies = new List<Movie>();
+
+            actor = new Actor();
 
             foreach (int movieId in Model.PlayedMovies)
             {
                 var movie = dbContext.Movies.SingleOrDefault(a => a.Id == movieId);
                 if (movie != null)
                 {
-                    playedMovies.Add(movie);
+                    playedmovies.Add(movie);
                 }
                 else
                 {
                     throw new InvalidOperationException($"Movie with ID {movieId} not found.");
                 }
             }
-            actor = new Actor();
 
             actor.FirstName = Model.FirstName;
             actor.LastName = Model.LastName;
+            actor.PlayedMovies = playedmovies;
 
             dbContext.Actors.Add(actor);
             dbContext.SaveChanges();

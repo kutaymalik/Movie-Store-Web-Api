@@ -9,6 +9,7 @@ using Movie_Store_Web_Api.Application.DirectorOperations.Queries.GetDirectorDeta
 using Movie_Store_Web_Api.Application.DirectorOperations.Queries.GetDirectors;
 using Movie_Store_Web_Api.Application.GenreOperations.Commands.CreateGenre;
 using Movie_Store_Web_Api.Application.MovieOperations.Queries.GetMovieDetail;
+using Movie_Store_Web_Api.Application.OrderOperations.Queries.GetOrders;
 using Movie_Store_Web_Api.Entities;
 
 namespace Movie_Store_Web_Api.Common
@@ -35,6 +36,10 @@ namespace Movie_Store_Web_Api.Common
 
             CreateMap<Director, DirectorDetailViewModel>();
             CreateMap<Director, DirectorsViewModel>();
+
+            CreateMap<Order, OrderViewModel>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.FirstName + " " + src.Customer.LastName))
+                .ForMember(dest => dest.MovieName, opt => opt.MapFrom(src => src.Movie.Name));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Movie_Store_Web_Api.DBOperations;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Movie_Store_Web_Api;
 
@@ -29,6 +30,9 @@ public class Startup
         services.AddScoped<IMovieStoreDbContext>(provider => provider.GetService<MovieStoreDbContext>());
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
 
         //services.AddSingleton<ILoggerService, DBLogger>();
     }

@@ -18,7 +18,7 @@ public class CreateMovieCommand
 
     public void Handle()
     {
-        Movie movie = dbContext.Movies.SingleOrDefault(x => x.Name == Model.Name);
+        var movie = dbContext.Movies.SingleOrDefault(x => x.Name.ToLower() == Model.Name.ToLower());
 
         if (movie != null)
         {
@@ -39,6 +39,7 @@ public class CreateMovieCommand
                 throw new InvalidOperationException($"Actor with ID {actorId} not found.");
             }
         }
+
         movie = new Movie();
 
         movie.Name = Model.Name;

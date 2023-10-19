@@ -1,4 +1,5 @@
-﻿using Movie_Store_Web_Api.DBOperations;
+﻿using Microsoft.EntityFrameworkCore;
+using Movie_Store_Web_Api.DBOperations;
 
 namespace Movie_Store_Web_Api.Application.ActorOperations.Commands.DeleteActor;
 
@@ -14,11 +15,16 @@ public class DeleteActorCommand
 
     public void Handle()
     {
-        var actor = dbContext.Actors.SingleOrDefault(x => x.Id == ActorId);
+        var actor = dbContext.Actors.Include(x => x.PlayedMovies).SingleOrDefault(x => x.Id == ActorId);
 
         if(actor == null)
         {
             throw new InvalidOperationException("Record not found!");
+        }
+
+        if(actor.PlayedMovies.Any())
+        {
+            throw new InvalidOperationException("You must first delete the played movies!");
         }
 
         dbContext.Actors.Remove(actor);

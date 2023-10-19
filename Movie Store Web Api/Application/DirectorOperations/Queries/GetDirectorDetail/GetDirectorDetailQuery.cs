@@ -29,8 +29,6 @@ public class GetDirectorDetailQuery
             throw new InvalidOperationException("Record not found!");
         }
 
-        
-
         DirectorDetailViewModel vm = mapper.Map<DirectorDetailViewModel>(director);
 
         return vm;
