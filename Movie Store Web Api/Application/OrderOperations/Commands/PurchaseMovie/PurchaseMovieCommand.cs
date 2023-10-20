@@ -8,11 +8,13 @@ namespace Movie_Store_Web_Api.Application.OrderOperations.Commands.PurchaseMovie
 public class PurchaseMovieCommand
 {
     private readonly IMovieStoreDbContext dbContext;
+    private readonly IHttpContextAccessor httpContextAccessor;
     public CreatePurchaseModel Model { get; set; }
 
-    public PurchaseMovieCommand(IMovieStoreDbContext dbContext)
+    public PurchaseMovieCommand(IMovieStoreDbContext dbContext, IHttpContextAccessor httpContextAccessor)
     {
         this.dbContext = dbContext;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public void Handle()
@@ -29,12 +31,15 @@ public class PurchaseMovieCommand
             throw new InvalidOperationException("The movie you wanted to buy was not found!");
         }
 
+        // Getting the id of the user in the session 
+        int sessionId = CheckSession();
+
         // Finding the customer who buys
         var customer = dbContext.Customers
             .Include(x => x.FavGenre)
             .Include(x => x.Orders)
             .Include(x => x.PurchasedMovies)
-            .SingleOrDefault(x => x.Id == Model.CustomerId);
+            .SingleOrDefault(x => x.Id == sessionId);
 
         if (customer == null)
         {
@@ -78,11 +83,24 @@ public class PurchaseMovieCommand
 
         dbContext.SaveChanges();
     }
+
+    private int CheckSession()
+    {
+        var sessionIdClaim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Id");
+
+        if(sessionIdClaim == null || !int.TryParse(sessionIdClaim.Value, out int sessionId))
+        {
+            throw new InvalidOperationException("Session id not found!");
+        }
+
+        return sessionId;
+    }
 }
 
 public class CreatePurchaseModel
 {
     public int MovieId { get; set; }
-    public int CustomerId { get; set; }
 }
+
+
 

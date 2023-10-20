@@ -7,6 +7,7 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+        var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         var host = CreateHostBuilder(args).Build();
 
         using (var scope = host.Services.CreateScope())

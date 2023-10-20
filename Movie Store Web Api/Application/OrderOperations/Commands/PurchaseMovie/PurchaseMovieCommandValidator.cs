@@ -6,7 +6,6 @@ public class PurchaseMovieCommandValidator : AbstractValidator<PurchaseMovieComm
 {
     public PurchaseMovieCommandValidator()
     {
-        RuleFor(x => x.Model.CustomerId).NotEmpty().GreaterThan(0).WithMessage("CustomerId field is required");
         RuleFor(x => x.Model.MovieId).NotEmpty().GreaterThan(0).WithMessage("MovieId field is required");
     }
 }
