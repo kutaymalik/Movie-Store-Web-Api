@@ -31,6 +31,12 @@
 
   <ItemGroup>
     <Folder Include="Application\ActorOperations\Queries\" />
+    <Folder Include="Application\DirectorOperations\" />
+    <Folder Include="Application\CustomerOperations\" />
+    <Folder Include="Application\GenreOperations\" />
+    <Folder Include="Application\MovieOperations\" />
+    <Folder Include="Application\TokenOperations\" />
+    <Folder Include="Application\OrderOperations\" />
   </ItemGroup>
 
 </Project>
